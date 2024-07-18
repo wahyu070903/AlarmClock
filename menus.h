@@ -5,6 +5,18 @@
 
 #ifndef MENUS_H
   #define MENUS_H
-  void mainMenus(int time_now);
-  void optionMenus();
+  class Menus{
+    private:
+      unsigned long time_now;
+      LiquidCrystal_I2C lcd;
+      uRTCLib rtc;
+    public:
+      void init();
+      int* getDetailTime();
+      void mainMenus();
+      void optionMenus(int activeOption);
+      bool setTimeMenus(int activeCursor,bool inc = false, bool dec = false, bool press = false);
+
+    Menus::Menus() : lcd(0x27, 16, 2), rtc(0x68) {}
+  };
 #endif
