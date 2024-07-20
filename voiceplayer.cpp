@@ -19,4 +19,6 @@ void Voice::playFile(int ID){
     player.play(1);
     playFile_isPlaying = true;
   }
+  uint8_t status = player.readType();
+  if(status == DFPlayerPlayFinished) playFile_isPlaying = false;
 }

@@ -183,9 +183,14 @@ int detailSetAlarm_minutes = 0;
 int detailSetAlarm_ActiveCursor = 0;
 int detailSetAlarm_Accept = 1;
 int Menus::detailSetAlarm(int alarmID, int encDir, int button, unsigned int* param_time){
+  EEPROM eeprom;
   if(!detailSetAlarm_refresh){
-    detailSetAlarm_minutes = rtc.minute();
-    detailSetAlarm_hour = rtc.hour();
+    int eepromtime[2];
+    eeprom.getDatas(alarmID,eepromtime);
+    detailSetAlarm_hour = eepromtime[0];
+    detailSetAlarm_minutes = eepromtime[1];
+    Serial.println(eepromtime[0]);
+    Serial.println(eepromtime[1]);
     lcd.clear();
     detailSetAlarm_refresh = true;
   }
@@ -247,7 +252,7 @@ int Menus::detailSetAlarm(int alarmID, int encDir, int button, unsigned int* par
     ptr = param_time;
     ptr[0] = detailSetAlarm_hour;
     ptr[1] = detailSetAlarm_minutes;
-
+    eeprom.storeData(alarmID, detailSetAlarm_hour, detailSetAlarm_minutes);
     detailSetAlarm_refresh = false;
     detailSetAlarm_hour = 0;
     detailSetAlarm_minutes = 0;
@@ -265,20 +270,20 @@ int Menus::detailSetAlarm(int alarmID, int encDir, int button, unsigned int* par
 
 bool listNotification_first = false;
 Menus::listNotification(int alarmID, unsigned int *param_time){
-  Voice voiceplayer;
-  while(true){
-    if(!listNotification_first){
-      lcd.clear();
-      voiceplayer.init();
-      listNotification_first = true;
-      Serial.println("first");
-    }
-
-    // voiceplayer.listFiles();
-    // voiceplayer.playFile(0);
-
-
-  }
+  // //Voice voiceplayer;
+  // EEPROM eeprom;
+  // while(true){
+  //   if(!listNotification_first){
+  //     lcd.clear();
+  //     //voiceplayer.init();
+  //     listNotification_first = true;
+  //     Serial.println("first");
+  //   }
+  //   eeprom.storeData(1,12,35);
+  //   eeprom.getDatas(1);
+  //   // voiceplayer.listFiles();
+  //   // voiceplayer.playFile(0);
+  // }
 }
 
 

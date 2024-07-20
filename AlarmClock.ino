@@ -2,6 +2,7 @@
 #include <LiquidCrystal_I2C.h>
 #include "uRTCLib.h"
 #include "menus.h"
+#include "alarm.h"
 
 #define ENC_CLK 2
 #define ENC_DT 3
@@ -53,6 +54,7 @@ class Encoder {
 
 Encoder enc;
 Menus menu;
+Alarm alarm;
 
 int active_menus = 0;
 unsigned int option1_cnt = 0;   //main option list counter
@@ -167,7 +169,7 @@ void loop() {
           alarmParam1[1] = 0;
         }else if(res != 0){
           isDone = true;
-          active_menus = 5;
+          active_menus = 3;
           // Serial.println(alarmParam1[0]);
           // Serial.println(alarmParam1[1]);
         }
@@ -179,7 +181,8 @@ void loop() {
       menu.listNotification(alarmID, alarmParam1);
     }
   }
-
+  int* hourwatch = menu.getDetailTime();
+  alarm.watch(hourwatch[0], hourwatch[1]);
   // Serial.print(option1_cnt);
   // Serial.print(",");
   // Serial.println(active_menus);
