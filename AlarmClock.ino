@@ -25,6 +25,7 @@ class Encoder {
       currentCLKState = digitalRead(ENC_CLK);
       int direction;
       if(currentCLKState != lastCLKState && currentCLKState == HIGH){
+        delay(10);
         if(digitalRead(ENC_DT) != currentCLKState){
           direction = 200;
         }else{
@@ -82,26 +83,6 @@ void loop() {
         break;
     }
     //Serial.println(encDirection);
-  }
-
-  // Menus sequencing start here 
-  if(enc.getButtonState()){
-    if(active_menus == 1 && option1_cnt == 0){    //change current time menus
-      active_menus = 2;
-      option1_cnt = 0;
-    }
-    if(active_menus == 0) active_menus = 1; // should at end
-    if(active_menus == 1 && option1_cnt == 2){  // back option menus
-      active_menus = 0;
-      option1_cnt = 0;
-    };
-    if(active_menus == 1 && option1_cnt == 1){    //setAlarm screen
-      active_menus = 3;
-      option1_cnt = 0;
-    }
-    // Serial.println(option1_cnt);
-    // Serial.println(active_menus);
-    // Serial.println("Pressed");
   }
 
   switch(active_menus){
@@ -175,14 +156,32 @@ void loop() {
         }
       }
     }
-    
-    case 5:
-    {
-      menu.listNotification(alarmID, alarmParam1);
-    }
   }
+
+// Menus sequencing start here 
+  if(enc.getButtonState()){
+    if(active_menus == 1 && option1_cnt == 0){    //change current time menus
+      active_menus = 2;
+      option1_cnt = 0;
+    }
+    if(active_menus == 0) active_menus = 1; // should at end
+    if(active_menus == 1 && option1_cnt == 2){  // back option menus
+      active_menus = 0;
+      option1_cnt = 0;
+    };
+    if(active_menus == 1 && option1_cnt == 1){    //setAlarm screen
+      active_menus = 3;
+      option1_cnt = 0;
+    }
+    // Serial.println(option1_cnt);
+    // Serial.println(active_menus);
+    // Serial.println("Pressed");
+  }
+
   int* hourwatch = menu.getDetailTime();
   alarm.watch(hourwatch[0], hourwatch[1]);
+
+  Serial.println(active_menus);
   // Serial.print(option1_cnt);
   // Serial.print(",");
   // Serial.println(active_menus);

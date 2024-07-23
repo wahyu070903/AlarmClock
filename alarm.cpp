@@ -16,6 +16,10 @@ int trackConf[10][3] = {
 EEPROM eeprom;
 unsigned long lastTrackRefresh = 0;
 bool isRefresh = false;
+int repeat = 1;
+int lastminute = 0;
+int repeat_cnt = 0;
+bool onlyonce = false;
 
 void Alarm::watch(int hourNow, int minuteNow){
   if(!isRefresh){
@@ -23,7 +27,7 @@ void Alarm::watch(int hourNow, int minuteNow){
     isRefresh = true;
   }
   if(millis() - lastTrackRefresh > 1000){
-    Serial.println("refreshtime");
+    //Serial.println("refreshtime");
     for(int i = 0; i < 10; i++){
       int timeData[2];
       eeprom.getDatas(i + 1, timeData);
@@ -33,15 +37,24 @@ void Alarm::watch(int hourNow, int minuteNow){
     }
     isRefresh = false;
 
-    bool onyonce = false;
     for(int i = 0 ; i < 10 ; i++){
       int alarmID = trackConf[i][0];
       int hour = trackConf[i][1];
       int minute = trackConf[i][2];
-      if(hourNow == hour && minuteNow == minute){
-        Serial.println("playing audio");
+      if(hourNow == hour && minuteNow == minute && onlyonce == false){
+        player.init();
         player.playFile(alarmID);
+        Serial.println(alarmID);
+        lastminute = minuteNow;
+        repeat_cnt++;
+        if(repeat_cnt == repeat){
+          onlyonce = true;
+        }
       }
+    }
+    if(onlyonce == true && lastminute != minuteNow){
+      onlyonce = false;
+      repeat_cnt = 0;
     }
     //check stored datas
     // for(int i = 0 ; i < 10; i++){
@@ -54,8 +67,8 @@ void Alarm::watch(int hourNow, int minuteNow){
     // }
     // Serial.println("");
 
-    Serial.print(hourNow);
-    Serial.print("x");
-    Serial.println(minuteNow);
+    // Serial.print(hourNow);
+    // Serial.print("x");
+    // Serial.println(minuteNow);
   }
 }

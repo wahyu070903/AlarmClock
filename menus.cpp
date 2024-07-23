@@ -1,5 +1,4 @@
 #include "menus.h"
-#include "voiceplayer.h"
 #include "eeprom.h"
 
 void Menus::init(){
@@ -93,7 +92,7 @@ bool Menus::setTimeMenus(int activeCursor,bool inc, bool dec, bool press){
   if(activeCursor == 0){
     lcd.setCursor(0,1);
     lcd.print("^");
-    if(inc && setTime[0] < 24){
+    if(inc && setTime[0] < 23){
       setTime[0] += 1;
       lcd.clear();
     }
@@ -269,22 +268,6 @@ int Menus::detailSetAlarm(int alarmID, int encDir, int button, unsigned int* par
 }
 
 bool listNotification_first = false;
-Menus::listNotification(int alarmID, unsigned int *param_time){
-  // //Voice voiceplayer;
-  // EEPROM eeprom;
-  // while(true){
-  //   if(!listNotification_first){
-  //     lcd.clear();
-  //     //voiceplayer.init();
-  //     listNotification_first = true;
-  //     Serial.println("first");
-  //   }
-  //   eeprom.storeData(1,12,35);
-  //   eeprom.getDatas(1);
-  //   // voiceplayer.listFiles();
-  //   // voiceplayer.playFile(0);
-  // }
-}
 
 
   

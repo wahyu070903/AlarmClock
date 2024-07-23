@@ -12,7 +12,7 @@
       Voice player;
     public:
       void watch(int hourNow, int minuteNow);
-
+      
     Alarm::Alarm() : rtc(0x68) {};
   };
 #endif

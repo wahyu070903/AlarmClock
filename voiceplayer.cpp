@@ -5,6 +5,7 @@ void Voice::init(){
   while(!player.begin(comm)){
     Serial.println("Player-failed");
   }
+  Serial.println("Player-success");
 }
 
 void Voice::listFiles(){
@@ -15,10 +16,16 @@ void Voice::listFiles(){
 bool playFile_isPlaying = false;
 void Voice::playFile(int ID){
   if(!playFile_isPlaying){
-    player.volume(30);
-    player.play(1);
-    playFile_isPlaying = true;
+    player.volume(10);
+    player.play(ID);
+    Serial.println("play here");
   }
-  uint8_t status = player.readType();
-  if(status == DFPlayerPlayFinished) playFile_isPlaying = false;
+  // if(player.available()){
+  //   uint8_t status = player.readType();
+  //   Serial.println(status);
+  //   if(status == DFPlayerPlayFinished){
+  //     playFile_isPlaying = false;
+  //     Serial.println("finished");
+  //   }
+  // }
 }
