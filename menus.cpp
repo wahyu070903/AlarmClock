@@ -42,6 +42,7 @@ void Menus::mainMenus(){
       lcd.print(timeData[2]);
     }
     time_now = millis();    //update last value
+    Serial.println(rtc.hour());
   }
 }
 
@@ -268,6 +269,7 @@ int Menus::detailSetAlarm(int alarmID, int encDir, int button, unsigned int* par
 }
 
 bool listNotification_first = false;
+
 
 
   

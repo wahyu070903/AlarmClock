@@ -4,8 +4,8 @@
 #include "menus.h"
 #include "alarm.h"
 
-#define ENC_CLK 2
-#define ENC_DT 3
+#define ENC_CLK 3
+#define ENC_DT 2
 #define ENC_SW 4
 char daysOfTheWeek[7][12] = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
 
@@ -181,7 +181,7 @@ void loop() {
   int* hourwatch = menu.getDetailTime();
   alarm.watch(hourwatch[0], hourwatch[1]);
 
-  Serial.println(active_menus);
+  //Serial.println(active_menus);
   // Serial.print(option1_cnt);
   // Serial.print(",");
   // Serial.println(active_menus);
