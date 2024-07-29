@@ -4,8 +4,8 @@
 #include "menus.h"
 #include "alarm.h"
 
-#define ENC_CLK 3
-#define ENC_DT 2
+#define ENC_CLK 2
+#define ENC_DT 3
 #define ENC_SW 4
 char daysOfTheWeek[7][12] = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
 
@@ -26,32 +26,77 @@ class Encoder {
       lastCLKState = digitalRead(ENC_CLK);
       TimeLastDebounce = 0;
       DelayOfBounce = 0.01;
+      previousCLK = digitalRead(ENC_CLK);
+      previousData = digitalRead(ENC_DT);
     }
     int getDirection(){
       /* return code 200 meand CW, 201 mean CCW */
+      int direction = 0;
       if((millis() - TimeLastDebounce) > DelayOfBounce){
-
+        if((previousCLK == 0) && (previousData == 1)){
+          if((digitalRead(ENC_CLK) == 1) && (digitalRead(ENC_DT) == 0)){
+            direction = 200;
+            Serial.println("CW 1,0");
+          }
+          if((digitalRead(ENC_CLK) == 1) && (digitalRead(ENC_DT) == 1)){
+            direction = 201;
+            Serial.println("CCW 1,1");
+          }
+        }
+        if((previousCLK == 1) && (previousData == 0)){
+          if((digitalRead(ENC_CLK) == 0) && (digitalRead(ENC_DT) == 1)){
+            direction = 200;
+            Serial.println("CW 0,1");
+          }
+          if((digitalRead(ENC_CLK) == 0) && (digitalRead(ENC_DT) == 0)){
+            direction = 201;
+            Serial.println("CCW 0,0");
+          }
+        }
+        if((previousCLK == 1) && (previousData == 1)){
+          if((digitalRead(ENC_CLK) == 0) && (digitalRead(ENC_DT) == 1)){
+            direction = 200;
+            Serial.println("CW 0,1");
+          }
+          if((digitalRead(ENC_CLK) == 0) && (digitalRead(ENC_DT) == 0)){
+            direction = 201;
+            Serial.println("CCW 0,0");
+          }
+        }
+        if((previousCLK == 0) && (previousData == 0)){
+          if((digitalRead(ENC_CLK) == 1) && (digitalRead(ENC_DT) == 0)){
+            direction = 200;
+            Serial.println("CW 1,0");
+          }
+          if((digitalRead(ENC_CLK) == 1) && (digitalRead(ENC_DT) == 1)){
+            direction = 201;
+            Serial.println("CCW 1,1");
+            
+          }
+        }
         previousCLK = digitalRead(ENC_CLK);
         previousData = digitalRead(ENC_DT);
         TimeLastDebounce = millis();
       }
-      currentCLKState = digitalRead(ENC_CLK);
-      int direction;
-      if(currentCLKState != lastCLKState && currentCLKState == HIGH){
-        delay(10);
-        if(digitalRead(ENC_DT) != currentCLKState){
-          direction = 200;
-        }else{
-          direction = 201;
-        }
-        //Serial.print(digitalRead(ENC_DT));
-        //Serial.println(currentCLKState);
-      }else{
-        direction = 0;
-      }
-      lastCLKState = currentCLKState;
-      Serial.println(direction);
+      //Serial.println(direction);
       return direction;
+      // currentCLKState = digitalRead(ENC_CLK);
+      // int direction;
+      // if(currentCLKState != lastCLKState && currentCLKState == HIGH){
+      //   delay(10);
+      //   if(digitalRead(ENC_DT) != currentCLKState){
+      //     direction = 200;
+      //   }else{
+      //     direction = 201;
+      //   }
+      //   //Serial.print(digitalRead(ENC_DT));
+      //   //Serial.println(currentCLKState);
+      // }else{
+      //   direction = 0;
+      // }
+      // lastCLKState = currentCLKState;
+      // Serial.println(direction);
+      // return direction;
     }
 
     int getButtonState(){
