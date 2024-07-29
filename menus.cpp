@@ -42,7 +42,7 @@ void Menus::mainMenus(){
       lcd.print(timeData[2]);
     }
     time_now = millis();    //update last value
-    Serial.println(rtc.hour());
+    //Serial.println(rtc.hour());
   }
 }
 
@@ -189,8 +189,8 @@ int Menus::detailSetAlarm(int alarmID, int encDir, int button, unsigned int* par
     eeprom.getDatas(alarmID,eepromtime);
     detailSetAlarm_hour = eepromtime[0];
     detailSetAlarm_minutes = eepromtime[1];
-    Serial.println(eepromtime[0]);
-    Serial.println(eepromtime[1]);
+    //Serial.println(eepromtime[0]);
+    //Serial.println(eepromtime[1]);
     lcd.clear();
     detailSetAlarm_refresh = true;
   }

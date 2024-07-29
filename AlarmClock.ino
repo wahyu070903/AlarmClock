@@ -14,14 +14,27 @@ class Encoder {
     int lastCLKState;
     int currentCLKState;
     unsigned long lastButtonState = 0;
+    long TimeLastDebounce;
+    int DelayOfBounce;
+    int previousCLK;
+    int previousData;
+
     void init(){
       pinMode(ENC_CLK, INPUT);
       pinMode(ENC_DT, INPUT);
       pinMode(ENC_SW, INPUT_PULLUP);
       lastCLKState = digitalRead(ENC_CLK);
+      TimeLastDebounce = 0;
+      DelayOfBounce = 0.01;
     }
     int getDirection(){
       /* return code 200 meand CW, 201 mean CCW */
+      if((millis() - TimeLastDebounce) > DelayOfBounce){
+
+        previousCLK = digitalRead(ENC_CLK);
+        previousData = digitalRead(ENC_DT);
+        TimeLastDebounce = millis();
+      }
       currentCLKState = digitalRead(ENC_CLK);
       int direction;
       if(currentCLKState != lastCLKState && currentCLKState == HIGH){
@@ -37,6 +50,7 @@ class Encoder {
         direction = 0;
       }
       lastCLKState = currentCLKState;
+      Serial.println(direction);
       return direction;
     }
 
@@ -103,7 +117,7 @@ void loop() {
           if(rotation != 0){
             (rotation == 200) ? increment = true : increment = false;
             (rotation == 201) ? decrement = true : decrement = false;
-            Serial.println(rotation);
+            //Serial.println(rotation);
           }
           if(enc.getButtonState()) option2_cnt++;
           bool finish = menu.setTimeMenus(option2_cnt,increment,decrement,pressed);

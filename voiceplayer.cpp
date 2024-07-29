@@ -10,15 +10,15 @@ void Voice::init(){
 
 void Voice::listFiles(){
   int fileCount = player.readFileCounts(DFPLAYER_DEVICE_SD);
-  Serial.println(fileCount);
+  //Serial.println(fileCount);
 }
 
 bool playFile_isPlaying = false;
 void Voice::playFile(int ID){
   if(!playFile_isPlaying){
-    player.volume(10);
+    player.volume(30);
     player.play(ID);
-    Serial.println("play here");
+    //Serial.println("play here");
   }
   // if(player.available()){
   //   uint8_t status = player.readType();

@@ -44,7 +44,7 @@ void Alarm::watch(int hourNow, int minuteNow){
       if(hourNow == hour && minuteNow == minute && onlyonce == false){
         player.init();
         player.playFile(alarmID);
-        Serial.println(alarmID);
+        //Serial.println(alarmID);
         lastminute = minuteNow;
         repeat_cnt++;
         if(repeat_cnt == repeat){
